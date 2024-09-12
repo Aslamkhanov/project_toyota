@@ -1,0 +1,199 @@
+package project_toyota.car;
+
+import project_toyota.project_enum.Transmission;
+import project_toyota.car_exception.StartCarException;
+import project_toyota.factory.*;
+
+import java.math.BigDecimal;
+
+public abstract class Car {
+    private String color;
+    private double maxSpeed;
+    private Transmission transmission;
+    private boolean stateOfMotion = false;
+    private Wheel[] wheel;
+    private GasTank gasTank;
+    private Engine engine;
+    private Electrician electrician;
+    private Headlights headlight;
+    private BigDecimal price;
+
+    public Car(String color, double maxSpeed, Transmission transmission,
+               Wheel[] wheel, GasTank gasTank, Engine engine, Electrician electrician,
+               Headlights headlight, BigDecimal price) {
+        this.color = color;
+        this.maxSpeed = maxSpeed;
+        this.transmission = transmission;
+        this.stateOfMotion = false;
+        this.wheel = wheel;
+        this.gasTank = gasTank;
+        this.engine = engine;
+        this.electrician = electrician;
+        this.headlight = headlight;
+        this.price = price;
+    }
+
+    public void wheelReplacement(Wheel newWheel) {
+        for (int i = 0; i < wheel.length; i++) {
+            if (wheel[i].getDiameter() == newWheel.getDiameter()) {
+                if (wheel[i] == null) {
+                    wheel[i] = newWheel;
+                    System.out.println("Колесо заменено ");
+                } else if (wheel[i].isPierced()) {
+                    wheel[i] = newWheel;
+                    System.out.println("Колесо заменено ");
+                }
+            }else {
+                System.out.println("Замена колеса не требуется: все колеса на месте и целые ");
+            }
+        }
+    }
+
+    public boolean presenceOfWheels() throws StartCarException {
+        // проверяет все ли колеса на месте.
+        for (int i = 0; i < wheel.length; i++) {
+            if (wheel[i] == null) {
+                throw new StartCarException("Нет колеса на позиции: " + i);
+            }
+        }
+        return true;
+    }
+
+    public boolean checkWheels() throws StartCarException {
+        // проверяет есть ли проколотое колесо
+        for (int i = 0; i < wheel.length; i++) {
+            if (wheel[i].isPierced()) {
+                throw new StartCarException("Колесо проколото на позиции: " + i);
+            }
+        }
+        return true;
+    }
+
+    public boolean amountOfFuel() throws StartCarException {
+        if (gasTank.getAmountOfGasoline() <= 0) {
+            throw new StartCarException("Количество бензина в баке: 0 ");
+        }
+        return true;
+    }
+
+    public boolean checkElectrician() throws StartCarException {
+        if (!electrician.isElectricalWorkable()) {
+            throw new StartCarException("Электрика неисправна ");
+        }
+        return true;
+    }
+
+    public boolean checkEngine() throws StartCarException {
+        if (!engine.isEngineIsOperational()) {
+            throw new StartCarException("Мотор троит ");
+        }
+        return true;
+    }
+
+    // старт
+    public void startMoving() throws StartCarException {
+        try {
+            if (presenceOfWheels() && checkWheels() && amountOfFuel() && checkElectrician() && checkEngine()) {
+                this.stateOfMotion = true;
+                System.out.println("Автомобиль успешно запущен и движется.");
+            }
+        } catch (StartCarException e) {
+            System.out.println("Не удалось начать движение: " + e.getMessage());
+        }
+    }
+
+    // stop
+    public void stopTheMotion() {
+        this.stateOfMotion = false;
+        System.out.println("Автомобиль заглушен ");
+    }
+
+    // включает фары
+    public void useHeadlights() {
+        if (headlight.isHeadlightsAreWorking()) {
+            System.out.println("Фары работают");
+        } else {
+            System.out.println("Фары не работают");
+        }
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public double getMaxSpeed() {
+        return maxSpeed;
+    }
+
+    public void setMaxSpeed(double maxSpeed) {
+        this.maxSpeed = maxSpeed;
+    }
+
+    public Transmission getTransmission() {
+        return transmission;
+    }
+
+    public void setTransmission(Transmission transmission) {
+        this.transmission = transmission;
+    }
+
+    public boolean isStateOfMotion() {
+        return stateOfMotion;
+    }
+
+    public void setStateOfMotion(boolean stateOfMotion) {
+        this.stateOfMotion = stateOfMotion;
+    }
+
+    public Wheel[] getWheel() {
+        return wheel;
+    }
+
+    public void setWheel(Wheel[] wheel) {
+        this.wheel = wheel;
+    }
+
+    public GasTank getGasTank() {
+        return gasTank;
+    }
+
+    public void setGasTank(GasTank gasTank) {
+        this.gasTank = gasTank;
+    }
+
+    public Engine getEngine() {
+        return engine;
+    }
+
+    public void setEngine(Engine engine) {
+        this.engine = engine;
+    }
+
+    public Electrician getElectrician() {
+        return electrician;
+    }
+
+    public void setElectrician(Electrician electrician) {
+        this.electrician = electrician;
+    }
+
+    public Headlights getHeadlight() {
+        return headlight;
+    }
+
+    public void setHeadlight(Headlights headlight) {
+        this.headlight = headlight;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+}

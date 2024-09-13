@@ -1,34 +1,37 @@
 package project_toyota.car;
 
+import project_toyota.car.car_detail.*;
 import project_toyota.project_enum.Transmission;
-import project_toyota.factory.*;
 
 import java.math.BigDecimal;
 
 public class Camry extends LightCar {
+    private UsbSocket usbSocket;
 
     public Camry(String color, double maxSpeed, Transmission transmission,
                  Wheel[] wheel, GasTank gasTank, Engine engine, Electrician electrician,
-                 Headlights headlight, BigDecimal price, boolean cruiseControl) {
+                 Headlights headlight, BigDecimal price, boolean cruiseControl, UsbSocket usbSocket) {
         super(color, maxSpeed, transmission, wheel, gasTank, engine, electrician, headlight, price, cruiseControl);
+        this.usbSocket = usbSocket;
     }
-
-    @Override
-    public void useHeadlights() {
-        super.useHeadlights();
-    }
-
-    @Override
-    public void cruiseControlOnOff() {
-        super.cruiseControlOnOff();
-    }
-
-    @Override
-    public void wheelReplacement(Wheel newWheel) {
-        super.wheelReplacement(newWheel);
-    }
-
+   // public void usb() {
+      //  System.out.println("функция подключить музыку ");
+   // }
     public void usb() {
-        System.out.println("функция подключить музыку ");
+        if (usbSocket.isUsb()) {
+            usbSocket.setUsb(false);
+            System.out.println("USB - музыка подключена ");
+        } else {
+            usbSocket.setUsb(true);
+            System.out.println("USB - музыка отключена ");
+        }
+    }
+
+    public UsbSocket getUsbSocket() {
+        return usbSocket;
+    }
+
+    public void setUsbSocket(UsbSocket usbSocket) {
+        this.usbSocket = usbSocket;
     }
 }

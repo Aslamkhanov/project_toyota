@@ -1,14 +1,10 @@
-package project_toyota.factory;
+package project_toyota.car.car_detail;
 
 /**
  * электрика
  */
 public class Electrician {
-    private boolean electricalWorkable; // электрика работоспособна
-
-    public Electrician() {
-        this.electricalWorkable = true;
-    }
+    private boolean electricalWorkable = true; // электрика работоспособна
 
     public boolean isElectricalWorkable() {
         return electricalWorkable;

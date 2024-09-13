@@ -1,30 +1,40 @@
 package project_toyota.car;
 
+import project_toyota.car.car_detail.*;
+import project_toyota.car_exception.StartCarException;
 import project_toyota.project_enum.Transmission;
-import project_toyota.factory.*;
 
 import java.math.BigDecimal;
 
 public class Cabriolet extends LightCar {
-    private boolean roof;
+    protected Roof roof;
 
     public Cabriolet(String color, double maxSpeed, Transmission transmission, Wheel[] wheel,
                      GasTank gasTank, Engine engine, Electrician electrician,
-                     Headlights headlight, BigDecimal price, boolean cruiseControl, boolean roof) {
+                     Headlights headlight, BigDecimal price, boolean cruiseControl, Roof roof) {
         super(color, maxSpeed, transmission, wheel, gasTank, engine, electrician, headlight, price, cruiseControl);
         this.roof = roof;
     }
-
     public void toggleRoof() {
-        this.roof = !this.roof;
-        System.out.println("Крыша " + (roof ? "опущена" : "поднята"));
+        if (roof.isToggleRoof()) {
+            roof.setToggleRoof(false);
+            System.out.println("Крыша опущена ");
+        } else {
+            roof.setToggleRoof(true);
+            System.out.println("Крыша поднята ");
+        }
     }
 
-    public boolean isRoof() {
+//    public void toggleRoof() {
+//        this.roof.isToggleRoof() = !this.roof.isToggleRoof();
+//        System.out.println("Крыша " + (roof.isToggleRoof() ? "опущена" : "поднята"));
+//    }
+
+    public Roof getRoof() {
         return roof;
     }
 
-    public void setRoof(boolean roof) {
+    public void setRoof(Roof roof) {
         this.roof = roof;
     }
 }

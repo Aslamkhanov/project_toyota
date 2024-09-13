@@ -1,7 +1,7 @@
 package project_toyota.car;
 
+import project_toyota.car.car_detail.*;
 import project_toyota.project_enum.Transmission;
-import project_toyota.factory.*;
 
 import java.math.BigDecimal;
 

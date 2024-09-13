@@ -1,22 +1,22 @@
 package project_toyota.car;
 
+import project_toyota.car.car_detail.*;
 import project_toyota.project_enum.Transmission;
 import project_toyota.car_exception.StartCarException;
-import project_toyota.factory.*;
 
 import java.math.BigDecimal;
 
 public abstract class Car {
-    private String color;
-    private double maxSpeed;
-    private Transmission transmission;
-    private boolean stateOfMotion = false;
-    private Wheel[] wheel;
-    private GasTank gasTank;
-    private Engine engine;
-    private Electrician electrician;
-    private Headlights headlight;
-    private BigDecimal price;
+    protected String color;
+    protected double maxSpeed;
+    protected Transmission transmission;
+    protected boolean stateOfMotion;
+    protected Wheel[] wheel;
+    protected GasTank gasTank;
+    protected Engine engine;
+    protected Electrician electrician;
+    protected Headlights headlight;
+    protected BigDecimal price;
 
     public Car(String color, double maxSpeed, Transmission transmission,
                Wheel[] wheel, GasTank gasTank, Engine engine, Electrician electrician,
@@ -24,7 +24,6 @@ public abstract class Car {
         this.color = color;
         this.maxSpeed = maxSpeed;
         this.transmission = transmission;
-        this.stateOfMotion = false;
         this.wheel = wheel;
         this.gasTank = gasTank;
         this.engine = engine;
@@ -38,10 +37,11 @@ public abstract class Car {
             if (wheel[i].getDiameter() == newWheel.getDiameter()) {
                 if (wheel[i] == null) {
                     wheel[i] = newWheel;
-                    System.out.println("Колесо заменено ");
+                    System.out.println("На место отсутствующего колеса " + wheel[i]
+                            + "поставили новое колесо " + newWheel);
                 } else if (wheel[i].isPierced()) {
                     wheel[i] = newWheel;
-                    System.out.println("Колесо заменено ");
+                    System.out.println(wheel[i] + "Проколотое колесо заменено на: " + newWheel);
                 }
             }else {
                 System.out.println("Замена колеса не требуется: все колеса на месте и целые ");
@@ -49,7 +49,7 @@ public abstract class Car {
         }
     }
 
-    public boolean presenceOfWheels() throws StartCarException {
+    protected boolean presenceOfWheels() throws StartCarException {
         // проверяет все ли колеса на месте.
         for (int i = 0; i < wheel.length; i++) {
             if (wheel[i] == null) {
@@ -59,7 +59,7 @@ public abstract class Car {
         return true;
     }
 
-    public boolean checkWheels() throws StartCarException {
+    protected boolean checkWheels() throws StartCarException {
         // проверяет есть ли проколотое колесо
         for (int i = 0; i < wheel.length; i++) {
             if (wheel[i].isPierced()) {
@@ -69,21 +69,21 @@ public abstract class Car {
         return true;
     }
 
-    public boolean amountOfFuel() throws StartCarException {
+    protected boolean amountOfFuel() throws StartCarException {
         if (gasTank.getAmountOfGasoline() <= 0) {
             throw new StartCarException("Количество бензина в баке: 0 ");
         }
         return true;
     }
 
-    public boolean checkElectrician() throws StartCarException {
+    protected boolean checkElectrician() throws StartCarException {
         if (!electrician.isElectricalWorkable()) {
             throw new StartCarException("Электрика неисправна ");
         }
         return true;
     }
 
-    public boolean checkEngine() throws StartCarException {
+    protected boolean checkEngine() throws StartCarException {
         if (!engine.isEngineIsOperational()) {
             throw new StartCarException("Мотор троит ");
         }
@@ -117,38 +117,6 @@ public abstract class Car {
         }
     }
 
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
-    }
-
-    public double getMaxSpeed() {
-        return maxSpeed;
-    }
-
-    public void setMaxSpeed(double maxSpeed) {
-        this.maxSpeed = maxSpeed;
-    }
-
-    public Transmission getTransmission() {
-        return transmission;
-    }
-
-    public void setTransmission(Transmission transmission) {
-        this.transmission = transmission;
-    }
-
-    public boolean isStateOfMotion() {
-        return stateOfMotion;
-    }
-
-    public void setStateOfMotion(boolean stateOfMotion) {
-        this.stateOfMotion = stateOfMotion;
-    }
-
     public Wheel[] getWheel() {
         return wheel;
     }
@@ -161,39 +129,8 @@ public abstract class Car {
         return gasTank;
     }
 
-    public void setGasTank(GasTank gasTank) {
-        this.gasTank = gasTank;
+    public void setGasTank(double gasTank) {
+        this.gasTank.setAmountOfGasoline(gasTank);
     }
 
-    public Engine getEngine() {
-        return engine;
-    }
-
-    public void setEngine(Engine engine) {
-        this.engine = engine;
-    }
-
-    public Electrician getElectrician() {
-        return electrician;
-    }
-
-    public void setElectrician(Electrician electrician) {
-        this.electrician = electrician;
-    }
-
-    public Headlights getHeadlight() {
-        return headlight;
-    }
-
-    public void setHeadlight(Headlights headlight) {
-        this.headlight = headlight;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
 }

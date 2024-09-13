@@ -1,5 +1,6 @@
 package project_toyota.factory;
 
+import project_toyota.car.car_detail.*;
 import project_toyota.project_enum.Country;
 
 public class PartsFactory {
@@ -16,7 +17,7 @@ public class PartsFactory {
         return new Wheel(diameter);
     }
     public GasTank createGasTank() {
-        return new GasTank(0);
+        return new GasTank();
     }
     public Engine createEngine() {
         return new Engine();
@@ -26,5 +27,14 @@ public class PartsFactory {
     }
     public Headlights creteHeadlights(){
         return new Headlights();
+    }
+    public Roof createRoof(){
+        return new Roof();
+    }
+    public UsbSocket createUsbSocket(){
+        return new UsbSocket();
+    }
+    public Charger createCharger(){
+        return new Charger();
     }
 }

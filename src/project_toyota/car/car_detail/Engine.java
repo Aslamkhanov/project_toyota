@@ -1,14 +1,10 @@
-package project_toyota.factory;
+package project_toyota.car.car_detail;
 
 /**
  * мотор
  */
 public class Engine {
-    private boolean engineIsOperational; // мотор работоспособен
-
-    public Engine( ) {
-        this.engineIsOperational = true;
-    }
+    private boolean engineIsOperational = true; // мотор работоспособен
 
     public boolean isEngineIsOperational() {
         return engineIsOperational;

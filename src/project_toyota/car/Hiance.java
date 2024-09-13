@@ -1,11 +1,9 @@
 package project_toyota.car;
 
-import project_toyota.project_enum.Diameter;
+import project_toyota.car.car_detail.*;
 import project_toyota.project_enum.Transmission;
-import project_toyota.factory.*;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
 
 public class Hiance extends Truck {
     private Wheel spareWheel;
@@ -16,30 +14,6 @@ public class Hiance extends Truck {
         super(color, maxSpeed, transmission, wheel, gasTank, engine, electrician, headlight, price);
         this.spareWheel = spareWheel;
     }
-
-    @Override
-    public void liftingCapacityInfo() {
-        super.liftingCapacityInfo();
-    }
-
-
-    @Override
-    public void wheelReplacement(Wheel newWheel) {
-        super.wheelReplacement(newWheel);
-    }
-
-    @Override
-    public String toString() {
-        return "Hiance{" +
-                "spareWheel=" + spareWheel +
-                '}';
-    }
-
-    @Override
-    public void useHeadlights() {
-        super.useHeadlights();
-    }
-
     public Wheel getSpareWheel() {
         return spareWheel;
     }

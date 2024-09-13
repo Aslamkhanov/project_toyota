@@ -1,14 +1,10 @@
-package project_toyota.factory;
+package project_toyota.car.car_detail;
 
 /**
  * фары
  */
 public class Headlights {
-    private boolean headlightsAreWorking;//фары работоспособны
-
-    public Headlights() {
-        this.headlightsAreWorking = true;
-    }
+    private boolean headlightsAreWorking = true;//фары работоспособны
 
     public boolean isHeadlightsAreWorking() {
         return headlightsAreWorking;

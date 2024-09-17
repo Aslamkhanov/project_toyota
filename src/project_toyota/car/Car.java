@@ -1,12 +1,15 @@
 package project_toyota.car;
 
 import project_toyota.car.car_detail.*;
+import project_toyota.project_enum.Country;
 import project_toyota.project_enum.Transmission;
 import project_toyota.car_exception.StartCarException;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 
 public abstract class Car {
+    protected Country country;
     protected String color;
     protected double maxSpeed;
     protected Transmission transmission;
@@ -18,9 +21,10 @@ public abstract class Car {
     protected Headlights headlight;
     protected BigDecimal price;
 
-    public Car(String color, double maxSpeed, Transmission transmission,
+    public Car(Country country, String color, double maxSpeed, Transmission transmission,
                Wheel[] wheel, GasTank gasTank, Engine engine, Electrician electrician,
                Headlights headlight, BigDecimal price) {
+        this.country = country;
         this.color = color;
         this.maxSpeed = maxSpeed;
         this.transmission = transmission;
@@ -133,4 +137,39 @@ public abstract class Car {
         this.gasTank.setAmountOfGasoline(gasTank);
     }
 
+    public Country getCountry() {
+        return country;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public double getMaxSpeed() {
+        return maxSpeed;
+    }
+
+    public Transmission getTransmission() {
+        return transmission;
+    }
+
+    public boolean isStateOfMotion() {
+        return stateOfMotion;
+    }
+
+    public Engine getEngine() {
+        return engine;
+    }
+
+    public Electrician getElectrician() {
+        return electrician;
+    }
+
+    public Headlights getHeadlight() {
+        return headlight;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
 }

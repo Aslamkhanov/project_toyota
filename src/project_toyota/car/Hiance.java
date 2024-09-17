@@ -1,6 +1,7 @@
 package project_toyota.car;
 
 import project_toyota.car.car_detail.*;
+import project_toyota.project_enum.Country;
 import project_toyota.project_enum.Transmission;
 
 import java.math.BigDecimal;
@@ -8,10 +9,10 @@ import java.math.BigDecimal;
 public class Hiance extends Truck {
     private Wheel spareWheel;
 
-    public Hiance(String color, double maxSpeed, Transmission transmission,
+    public Hiance(Country country, String color, double maxSpeed, Transmission transmission,
                   Wheel[] wheel, GasTank gasTank, Engine engine, Electrician electrician,
                   Headlights headlight, BigDecimal price, Wheel spareWheel) {
-        super(color, maxSpeed, transmission, wheel, gasTank, engine, electrician, headlight, price);
+        super(country, color, maxSpeed, transmission, wheel, gasTank, engine, electrician, headlight, price);
         this.spareWheel = spareWheel;
     }
     public Wheel getSpareWheel() {

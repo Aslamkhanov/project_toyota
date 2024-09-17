@@ -37,4 +37,5 @@ public class PartsFactory {
     public Charger createCharger(){
         return new Charger();
     }
+
 }

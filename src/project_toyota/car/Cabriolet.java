@@ -2,6 +2,7 @@ package project_toyota.car;
 
 import project_toyota.car.car_detail.*;
 import project_toyota.car_exception.StartCarException;
+import project_toyota.project_enum.Country;
 import project_toyota.project_enum.Transmission;
 
 import java.math.BigDecimal;
@@ -9,10 +10,10 @@ import java.math.BigDecimal;
 public class Cabriolet extends LightCar {
     protected Roof roof;
 
-    public Cabriolet(String color, double maxSpeed, Transmission transmission, Wheel[] wheel,
+    public Cabriolet(Country country, String color, double maxSpeed, Transmission transmission, Wheel[] wheel,
                      GasTank gasTank, Engine engine, Electrician electrician,
                      Headlights headlight, BigDecimal price, boolean cruiseControl, Roof roof) {
-        super(color, maxSpeed, transmission, wheel, gasTank, engine, electrician, headlight, price, cruiseControl);
+        super(country, color, maxSpeed, transmission, wheel, gasTank, engine, electrician, headlight, price, cruiseControl);
         this.roof = roof;
     }
     public void toggleRoof() {

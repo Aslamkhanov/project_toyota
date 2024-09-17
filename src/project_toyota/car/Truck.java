@@ -1,6 +1,7 @@
 package project_toyota.car;
 
 import project_toyota.car.car_detail.*;
+import project_toyota.project_enum.Country;
 import project_toyota.project_enum.Transmission;
 
 import java.math.BigDecimal;
@@ -8,10 +9,10 @@ import java.math.BigDecimal;
 public abstract class Truck extends Car {
     private int liftingCapacity;
 
-    public Truck(String color, double maxSpeed, Transmission transmission, Wheel[] wheel,
+    public Truck(Country country, String color, double maxSpeed, Transmission transmission, Wheel[] wheel,
                  GasTank gasTank, Engine engine, Electrician electrician,
                  Headlights headlight, BigDecimal price) {
-        super(color, maxSpeed, transmission, wheel, gasTank, engine, electrician, headlight, price);
+        super(country, color, maxSpeed, transmission, wheel, gasTank, engine, electrician, headlight, price);
         this.liftingCapacity = 3000;
     }
 

@@ -10,6 +10,7 @@ import project_toyota.factory.AssemblyLine;
 import project_toyota.car.car_detail.GasTank;
 import project_toyota.factory.PartsFactory;
 import project_toyota.project_enum.Country;
+import project_toyota.project_enum.PricesForCars;
 
 import java.math.BigDecimal;
 
@@ -19,8 +20,6 @@ public class Runner {
         PartsFactory partsFactoryKorea = new PartsFactory(Country.KOREA);
         PartsFactory partsFactoryRussia = new PartsFactory(Country.RUSSIA);
         PartsFactory partsFactoryGermany = new PartsFactory(Country.GERMANY);
-
-        AssemblyLine assemblyLineJapan2 = new AssemblyLine(Country.JAPAN,partsFactoryJapan);
 
         AssemblyLine assemblyLineJapan = new AssemblyLine(Country.JAPAN,partsFactoryJapan);
         AssemblyLine assemblyLineKorea = new AssemblyLine(Country.KOREA,partsFactoryKorea);
@@ -34,11 +33,55 @@ public class Runner {
             System.out.println("неудача " + e.getMessage());
         }
 
+        Camry blackCamry = assemblyLineJapan.createCamry(PricesForCars.CAMRY.getPriceCar(), "Black");
+        Solara whiteSolara = assemblyLineJapan.createSolara(PricesForCars.SOLARA.getPriceCar(), "White");
+        Hiance blackHiance = assemblyLineJapan.createHiance(PricesForCars.HIANCE.getPriceCar(), "Black");
+        Dyna blackDyna = assemblyLineJapan.createDyna(PricesForCars.DYNA.getPriceCar(), "Black");
 
-        Camry blackCamry = assemblyLineJapan.createCamry(BigDecimal.valueOf(10_000), "Black");
-        Solara redSolara = assemblyLineKorea.createSolara(BigDecimal.valueOf(10_000), "Red");
-        Hiance whiteHiance = assemblyLineRussia.createHiance(BigDecimal.valueOf(20_000), "White");
-        Dyna yellowDyna = assemblyLineGermany.createDyna(BigDecimal.valueOf(30_000), "Yellow");
+        // склад
+        Warehouse warehouse = new Warehouse();
+        warehouse.addCamry(blackCamry);
+        warehouse.addSolara(whiteSolara);
+        warehouse.addHiance(blackHiance);
+        warehouse.addDyna(blackDyna);
+        Manager manager = new Manager();
+        Cashier cashier = new Cashier();
+
+        // В первый день придет 8 покупателей.
+        // у первого будет 10000 - уйдет с камри, которая в наличии на складе
+        Customer customer1 = new Customer("Anbu", BigDecimal.valueOf(10_000));
+        cashier.acceptsCarForSale(manager.sellTheCar(customer1,warehouse));
+
+        // у второго будет 12000 - уйдет с соларой, которая в наличии на складе
+        Customer customer2 = new Customer("Ivan", BigDecimal.valueOf(12_000));
+        cashier.acceptsCarForSale(manager.sellTheCar(customer2,warehouse));
+
+        // у третьего будет 15000 - уйдет с хайянс, которая в наличии на складе
+        Customer customer3 = new Customer("Andrey", BigDecimal.valueOf(15_000));
+        cashier.acceptsCarForSale(manager.sellTheCar(customer3,warehouse));
+
+        // у четвертого будет 22000 - уйдет с дюной, которая в наличии на складе
+        Customer customer4 = new Customer("Andrey", BigDecimal.valueOf(22_000));
+        cashier.acceptsCarForSale(manager.sellTheCar(customer4,warehouse));
+
+        // у пятого будет 11000 - уйдет с камри, созданной по запросу на производство (цена камри + 10%)
+        Customer customer5 = new Customer("Andrey", BigDecimal.valueOf(11_000));
+        cashier.acceptsCarForSale(manager.sellTheCar(customer5,warehouse));
+
+        // у шестого будет 13200 - уйдет с соларой, созданной по запросу на производство (цена солары + 10%)
+        Customer customer6 = new Customer("Andrey", BigDecimal.valueOf(13_200));
+        cashier.acceptsCarForSale(manager.sellTheCar(customer6,warehouse));
+
+        // у седьмого будет 8000 - уйдет ни с чем
+        Customer customer7 = new Customer("Andrey", BigDecimal.valueOf(8_000));
+        cashier.acceptsCarForSale(manager.sellTheCar(customer7,warehouse));
+
+        // у восьмого будет 30000 - уйдет с дюной, созданной по запросу на производство (цена дюны + 10%)
+        Customer customer8 = new Customer("Andrey", BigDecimal.valueOf(15_000));
+        cashier.acceptsCarForSale(manager.sellTheCar(customer8,warehouse));
+        System.out.println("Сумма всех проданных машин: " + cashier.getTotalMoney());
+
+
 
         blackCamry.setGasTank(10);
         blackCamry.cruiseControlOnOff();
@@ -49,30 +92,30 @@ public class Runner {
         blackCamry.startMoving();
         blackCamry.stopTheMotion();
 
-        redSolara.setGasTank(5);
-        redSolara.cruiseControlOnOff();
-        redSolara.cruiseControlOnOff();
-        redSolara.useHeadlights();
-        redSolara.toggleRoof();
-        redSolara.toggleRoof();
-        redSolara.miniRefrigerator();
-        redSolara.startMoving();
-        redSolara.stopTheMotion();
+        whiteSolara.setGasTank(5);
+        whiteSolara.cruiseControlOnOff();
+        whiteSolara.cruiseControlOnOff();
+        whiteSolara.useHeadlights();
+        whiteSolara.toggleRoof();
+        whiteSolara.toggleRoof();
+        whiteSolara.miniRefrigerator();
+        whiteSolara.startMoving();
+        whiteSolara.stopTheMotion();
 
-        whiteHiance.setGasTank(15);
-        whiteHiance.liftingCapacityInfo();
-        System.out.println(whiteHiance.getSpareWheel());
-        whiteHiance.useHeadlights();
-        whiteHiance.startMoving();
-        whiteHiance.stopTheMotion();
+        blackHiance.setGasTank(15);
+        blackHiance.liftingCapacityInfo();
+        System.out.println(blackHiance.getSpareWheel());
+        blackHiance.useHeadlights();
+        blackCamry.startMoving();
+        blackCamry.stopTheMotion();
 
-        yellowDyna.setGasTank(20);
-        yellowDyna.liftingCapacityInfo();
-        yellowDyna.useHeadlights();
-        yellowDyna.chargePhone();
-        yellowDyna.chargePhone();
-        yellowDyna.startMoving();
-        yellowDyna.stopTheMotion();
+        blackDyna.setGasTank(20);
+        blackDyna.liftingCapacityInfo();
+        blackDyna.useHeadlights();
+        blackDyna.chargePhone();
+        blackDyna.chargePhone();
+        blackDyna.startMoving();
+        blackDyna.stopTheMotion();
 
     }
 }

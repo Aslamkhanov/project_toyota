@@ -6,11 +6,14 @@ import project_toyota.car.Hiance;
 import project_toyota.car.Solara;
 import project_toyota.car_exception.CountyFactoryNotEqualException;
 import project_toyota.car_exception.StartCarException;
+import project_toyota.dealer.Cashier;
+import project_toyota.dealer.Customer;
+import project_toyota.dealer.Manager;
 import project_toyota.factory.AssemblyLine;
-import project_toyota.car.car_detail.GasTank;
 import project_toyota.factory.PartsFactory;
 import project_toyota.project_enum.Country;
 import project_toyota.project_enum.PricesForCars;
+import project_toyota.warehouse.Warehouse;
 
 import java.math.BigDecimal;
 
@@ -44,8 +47,9 @@ public class Runner {
         warehouse.addSolara(whiteSolara);
         warehouse.addHiance(blackHiance);
         warehouse.addDyna(blackDyna);
-        Manager manager = new Manager();
+        Manager manager = new Manager("Nikolay");
         Cashier cashier = new Cashier();
+        manager.setAssemblyLine(assemblyLineJapan);
 
         // В первый день придет 8 покупателей.
         // у первого будет 10000 - уйдет с камри, которая в наличии на складе
@@ -77,11 +81,9 @@ public class Runner {
         cashier.acceptsCarForSale(manager.sellTheCar(customer7,warehouse));
 
         // у восьмого будет 30000 - уйдет с дюной, созданной по запросу на производство (цена дюны + 10%)
-        Customer customer8 = new Customer("Andrey", BigDecimal.valueOf(15_000));
+        Customer customer8 = new Customer("Andrey", BigDecimal.valueOf(30_000));
         cashier.acceptsCarForSale(manager.sellTheCar(customer8,warehouse));
         System.out.println("Сумма всех проданных машин: " + cashier.getTotalMoney());
-
-
 
         blackCamry.setGasTank(10);
         blackCamry.cruiseControlOnOff();
@@ -116,6 +118,5 @@ public class Runner {
         blackDyna.chargePhone();
         blackDyna.startMoving();
         blackDyna.stopTheMotion();
-
     }
 }

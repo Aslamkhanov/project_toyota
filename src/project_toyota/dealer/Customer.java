@@ -1,4 +1,4 @@
-package project_toyota;
+package project_toyota.dealer;
 
 import java.math.BigDecimal;
 
@@ -14,7 +14,6 @@ public class Customer {
     public String getName() {
         return name;
     }
-
 
     public BigDecimal getMoney() {
         return money;

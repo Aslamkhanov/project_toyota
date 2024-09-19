@@ -118,5 +118,6 @@ public class Runner {
         blackDyna.chargePhone();
         blackDyna.startMoving();
         blackDyna.stopTheMotion();
+        manager.generateReport();
     }
 }

@@ -9,6 +9,7 @@ import project_toyota.car_exception.CountyFactoryNotEqualException;
 import project_toyota.project_enum.Country;
 import project_toyota.project_enum.Diameter;
 import project_toyota.project_enum.Transmission;
+import project_toyota.report_guide.ModelGuide;
 
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -30,16 +31,6 @@ public class AssemblyLine {
         this.partsFactory = partsFactory;
     }
 
-    // Сборочный конвеер может пользоваться только той фабрикой производств, которая находится в той же стране
-    // (Подумать где должна происходить эта проверка). Иначе должна появляться ошибка: CountyFactoryNotEqualException
-    // - в описании ошибки должны описаться страны которые не совпали.
-//    public void checkFactoryCountry(PartsFactory country) throws CountyFactoryNotEqualException {
-//        if (!this.country.equals(partsFactory.getCountry())) {
-//            throw new CountyFactoryNotEqualException("Страна фабрики не совпадает: " +
-//                    partsFactory.getCountry() + " != " + this.country);
-//        }
-//    }
-
     private Wheel[] wheelsDiameter(Diameter diameter) {
         Wheel[] wheels = new Wheel[3];
 
@@ -57,14 +48,14 @@ public class AssemblyLine {
 
     public Camry createCamry(BigDecimal price, String color) throws CountyFactoryNotEqualException {
         Wheel[] wheels = wheelsDiameter(Diameter.CAMRY);
-        return new Camry(country, color, maxSpeedCamry, Transmission.AUTOMATIC, wheels,
+        return new Camry(ModelGuide.CAMRY, country, color, maxSpeedCamry, Transmission.AUTOMATIC, wheels,
                 partsFactory.createGasTank(), partsFactory.createEngine(), partsFactory.createElectrician(),
                 partsFactory.creteHeadlights(), price, false, partsFactory.createUsbSocket());
     }
 
     public Solara createSolara(BigDecimal price, String color) throws CountyFactoryNotEqualException {
         Wheel[] wheels = wheelsDiameter(Diameter.SOLARA);
-        return new Solara(country, color, maxSpeedSolara, Transmission.AUTOMATIC,
+        return new Solara(ModelGuide.SOLARA ,country, color, maxSpeedSolara, Transmission.AUTOMATIC,
                 wheels, partsFactory.createGasTank(), partsFactory.createEngine(),
                 partsFactory.createElectrician(), partsFactory.creteHeadlights(),
                 price, false, partsFactory.createRoof());
@@ -72,14 +63,14 @@ public class AssemblyLine {
 
     public Hiance createHiance(BigDecimal price, String color) throws CountyFactoryNotEqualException {
         Wheel[] wheels = wheelsDiameter(Diameter.TRUCK);
-        return new Hiance(country, color, maxSpeedTruck, Transmission.AUTOMATIC,
+        return new Hiance(ModelGuide.HIANCE, country, color, maxSpeedTruck, Transmission.AUTOMATIC,
                 wheels, partsFactory.createGasTank(), partsFactory.createEngine(), partsFactory.createElectrician(),
                 partsFactory.creteHeadlights(), price, partsFactory.createWheel(Diameter.TRUCK.getDiameter()));
     }
 
     public Dyna createDyna(BigDecimal price, String color) throws CountyFactoryNotEqualException {
         Wheel[] wheels = wheelsDiameter(Diameter.TRUCK);
-        return new Dyna(country, color, maxSpeedTruck, Transmission.AUTOMATIC, wheels,
+        return new Dyna(ModelGuide.DYNA, country, color, maxSpeedTruck, Transmission.AUTOMATIC, wheels,
                 partsFactory.createGasTank(), partsFactory.createEngine(), partsFactory.createElectrician(),
                 partsFactory.creteHeadlights(), price, partsFactory.createCharger());
     }

@@ -4,11 +4,13 @@ import project_toyota.car.car_detail.*;
 import project_toyota.project_enum.Country;
 import project_toyota.project_enum.Transmission;
 import project_toyota.car_exception.StartCarException;
+import project_toyota.report_guide.ModelGuide;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
 
 public abstract class Car {
+    protected ModelGuide modelGuide;
     protected Country country;
     protected String color;
     protected double maxSpeed;
@@ -21,9 +23,10 @@ public abstract class Car {
     protected Headlights headlight;
     protected BigDecimal price;
 
-    public Car(Country country, String color, double maxSpeed, Transmission transmission,
+    public Car(ModelGuide modelGuide, Country country, String color, double maxSpeed, Transmission transmission,
                Wheel[] wheel, GasTank gasTank, Engine engine, Electrician electrician,
                Headlights headlight, BigDecimal price) {
+        this.modelGuide = modelGuide;
         this.country = country;
         this.color = color;
         this.maxSpeed = maxSpeed;
@@ -119,6 +122,10 @@ public abstract class Car {
         } else {
             System.out.println("Фары не работают");
         }
+    }
+
+    public ModelGuide getModelGuide() {
+        return modelGuide;
     }
 
     public Wheel[] getWheel() {

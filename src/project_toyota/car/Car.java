@@ -1,6 +1,7 @@
 package project_toyota.car;
 
 import project_toyota.car.car_detail.*;
+import project_toyota.project_enum.CarTyp;
 import project_toyota.project_enum.Country;
 import project_toyota.project_enum.Transmission;
 import project_toyota.car_exception.StartCarException;
@@ -10,6 +11,7 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 
 public abstract class Car {
+    protected CarTyp carTyp;
     protected ModelGuide modelGuide;
     protected Country country;
     protected String color;
@@ -23,9 +25,10 @@ public abstract class Car {
     protected Headlights headlight;
     protected BigDecimal price;
 
-    public Car(ModelGuide modelGuide, Country country, String color, double maxSpeed, Transmission transmission,
-               Wheel[] wheel, GasTank gasTank, Engine engine, Electrician electrician,
+    public Car(CarTyp carTyp, ModelGuide modelGuide, Country country, String color, double maxSpeed,
+               Transmission transmission, Wheel[] wheel, GasTank gasTank, Engine engine, Electrician electrician,
                Headlights headlight, BigDecimal price) {
+        this.carTyp = carTyp;
         this.modelGuide = modelGuide;
         this.country = country;
         this.color = color;
@@ -126,6 +129,10 @@ public abstract class Car {
 
     public ModelGuide getModelGuide() {
         return modelGuide;
+    }
+
+    public CarTyp getCarTyp() {
+        return carTyp;
     }
 
     public Wheel[] getWheel() {

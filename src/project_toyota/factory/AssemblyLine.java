@@ -6,8 +6,9 @@ import project_toyota.car.Hiance;
 import project_toyota.car.Solara;
 import project_toyota.car.car_detail.Wheel;
 import project_toyota.car_exception.CountyFactoryNotEqualException;
+import project_toyota.project_enum.CarTyp;
 import project_toyota.project_enum.Country;
-import project_toyota.project_enum.Diameter;
+import project_toyota.project_enum.WheelDiameter;
 import project_toyota.project_enum.Transmission;
 import project_toyota.report_guide.ModelGuide;
 
@@ -31,46 +32,46 @@ public class AssemblyLine {
         this.partsFactory = partsFactory;
     }
 
-    private Wheel[] wheelsDiameter(Diameter diameter) {
+    private Wheel[] wheelsDiameter(WheelDiameter diameter) {
         Wheel[] wheels = new Wheel[3];
 
         for (int i = 0; i < wheels.length; i++) {
-            if (diameter.equals(Diameter.CAMRY)) {
-                wheels[i] = partsFactory.createWheel(Diameter.CAMRY.getDiameter());
-            } else if (diameter.equals(Diameter.SOLARA)) {
-                wheels[i] = partsFactory.createWheel(Diameter.SOLARA.getDiameter());
-            } else if (diameter.equals(Diameter.TRUCK)) {
-                wheels[i] = partsFactory.createWheel(Diameter.TRUCK.getDiameter());
+            if (diameter.equals(WheelDiameter.CAMRY)) {
+                wheels[i] = partsFactory.createWheel(WheelDiameter.CAMRY.getDiameter());
+            } else if (diameter.equals(WheelDiameter.SOLARA)) {
+                wheels[i] = partsFactory.createWheel(WheelDiameter.SOLARA.getDiameter());
+            } else if (diameter.equals(WheelDiameter.TRUCK)) {
+                wheels[i] = partsFactory.createWheel(WheelDiameter.TRUCK.getDiameter());
             }
         }
         return wheels;
     }
 
     public Camry createCamry(BigDecimal price, String color) throws CountyFactoryNotEqualException {
-        Wheel[] wheels = wheelsDiameter(Diameter.CAMRY);
-        return new Camry(ModelGuide.CAMRY, country, color, maxSpeedCamry, Transmission.AUTOMATIC, wheels,
+        Wheel[] wheels = wheelsDiameter(WheelDiameter.CAMRY);
+        return new Camry(CarTyp.CAMRY, ModelGuide.CAMRY, country, color, maxSpeedCamry, Transmission.AUTOMATIC, wheels,
                 partsFactory.createGasTank(), partsFactory.createEngine(), partsFactory.createElectrician(),
                 partsFactory.creteHeadlights(), price, false, partsFactory.createUsbSocket());
     }
 
     public Solara createSolara(BigDecimal price, String color) throws CountyFactoryNotEqualException {
-        Wheel[] wheels = wheelsDiameter(Diameter.SOLARA);
-        return new Solara(ModelGuide.SOLARA ,country, color, maxSpeedSolara, Transmission.AUTOMATIC,
+        Wheel[] wheels = wheelsDiameter(WheelDiameter.SOLARA);
+        return new Solara(CarTyp.SOLARA, ModelGuide.SOLARA ,country, color, maxSpeedSolara, Transmission.AUTOMATIC,
                 wheels, partsFactory.createGasTank(), partsFactory.createEngine(),
                 partsFactory.createElectrician(), partsFactory.creteHeadlights(),
                 price, false, partsFactory.createRoof());
     }
 
     public Hiance createHiance(BigDecimal price, String color) throws CountyFactoryNotEqualException {
-        Wheel[] wheels = wheelsDiameter(Diameter.TRUCK);
-        return new Hiance(ModelGuide.HIANCE, country, color, maxSpeedTruck, Transmission.AUTOMATIC,
+        Wheel[] wheels = wheelsDiameter(WheelDiameter.TRUCK);
+        return new Hiance(CarTyp.HIANCE, ModelGuide.HIANCE, country, color, maxSpeedTruck, Transmission.AUTOMATIC,
                 wheels, partsFactory.createGasTank(), partsFactory.createEngine(), partsFactory.createElectrician(),
-                partsFactory.creteHeadlights(), price, partsFactory.createWheel(Diameter.TRUCK.getDiameter()));
+                partsFactory.creteHeadlights(), price, partsFactory.createWheel(WheelDiameter.TRUCK.getDiameter()));
     }
 
     public Dyna createDyna(BigDecimal price, String color) throws CountyFactoryNotEqualException {
-        Wheel[] wheels = wheelsDiameter(Diameter.TRUCK);
-        return new Dyna(ModelGuide.DYNA, country, color, maxSpeedTruck, Transmission.AUTOMATIC, wheels,
+        Wheel[] wheels = wheelsDiameter(WheelDiameter.TRUCK);
+        return new Dyna(CarTyp.DYNA, ModelGuide.DYNA, country, color, maxSpeedTruck, Transmission.AUTOMATIC, wheels,
                 partsFactory.createGasTank(), partsFactory.createEngine(), partsFactory.createElectrician(),
                 partsFactory.creteHeadlights(), price, partsFactory.createCharger());
     }

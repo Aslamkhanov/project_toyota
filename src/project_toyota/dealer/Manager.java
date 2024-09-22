@@ -1,10 +1,11 @@
 package project_toyota.dealer;
 
-import project_toyota.report_guide.Report;
 import project_toyota.car.Car;
 import project_toyota.car_exception.CountyFactoryNotEqualException;
 import project_toyota.factory.AssemblyLine;
-import project_toyota.project_enum.PricesForCars;
+import project_toyota.project_enum.CarPrice;
+import project_toyota.project_enum.CarTyp;
+import project_toyota.report_guide.Report;
 import project_toyota.warehouse.Warehouse;
 
 import java.io.BufferedWriter;
@@ -27,64 +28,56 @@ public class Manager {
         this.assemblyLine = assemblyLine;
     }
 
-    public BigDecimal addPercent(PricesForCars prices, BigDecimal percent) {
+    public BigDecimal addPercent(CarPrice prices, BigDecimal percent) {
         return prices.getPriceCar().add(prices.getPriceCar().multiply(percent));
     }
 
     public Car sellTheCar(Customer customer, Warehouse warehouse) throws CountyFactoryNotEqualException {
-        BigDecimal costumerMoney = customer.getMoney();
+        BigDecimal customerMoney = customer.getMoney();
 
-        if (Warehouse.getTotalCars() == 0) {
-
-            if (costumerMoney.compareTo(addPercent(PricesForCars.DYNA, PERCENT)) >= 0 &&
-                    warehouse.getTypeDyna().isEmpty()) {
-                warehouse.addDyna(assemblyLine.createDyna(addPercent(PricesForCars.DYNA, PERCENT),
-                        "Black"));
-                 report.addSoldCars(this.name, warehouse.getTypeDyna().get(0));
-                 return warehouse.takeDyna(warehouse.getTypeDyna().get(0));
-            }
-            if (costumerMoney.compareTo(addPercent(PricesForCars.HIANCE, PERCENT)) >= 0 &&
-                    warehouse.getTypeHiance().isEmpty()) {
-                warehouse.addHiance(assemblyLine.createHiance(addPercent(PricesForCars.HIANCE, PERCENT),
-                        "Black"));
-                report.addSoldCars(this.name, warehouse.getTypeHiance().get(0));
-                return warehouse.takeHiance(warehouse.getTypeHiance().get(0));
-            }
-            if (costumerMoney.compareTo(addPercent(PricesForCars.SOLARA, PERCENT)) >= 0 &&
-                    warehouse.getTypeSolara().isEmpty()) {
-                warehouse.addSolara(assemblyLine.createSolara(addPercent(PricesForCars.SOLARA, PERCENT),
-                        "White"));
-                report.addSoldCars(this.name, warehouse.getTypeSolara().get(0));
-                return warehouse.takeSolara(warehouse.getTypeSolara().get(0));
-            }
-            if (costumerMoney.compareTo(addPercent(PricesForCars.CAMRY, PERCENT)) >= 0 &&
-                    warehouse.getTypeCamry().isEmpty()) {
-                warehouse.addCamry(assemblyLine.createCamry(addPercent(PricesForCars.CAMRY, PERCENT),
-                        "Black"));
-                report.addSoldCars(this.name, warehouse.getTypeCamry().get(0));
-                return warehouse.takeCamry(warehouse.getTypeCamry().get(0));
+        if (warehouse.getTotalCars() > 0) {
+            for (CarTyp carTyp : CarTyp.values()) {
+                List<Car> cars = warehouse.getCarMap().get(carTyp);
+                if (cars != null && !cars.isEmpty()) {
+                    cars.sort((car1, car2) -> car2.getPrice().compareTo(car1.getPrice()));
+                    for (Car car : cars) {
+                        if (customerMoney.compareTo(car.getPrice()) >= 0) {
+                            report.addSoldCars(this.name, car);
+                            warehouse.removeCar(car);
+                            return car;
+                        }
+                    }
+                }
             }
         }
-            if (costumerMoney.compareTo(PricesForCars.DYNA.getPriceCar()) >= 0 &&
-                    !warehouse.getTypeDyna().isEmpty()) {
-                report.addSoldCars(this.name, warehouse.getTypeDyna().get(0));
-                return warehouse.takeDyna(warehouse.getTypeDyna().get(0));
+        Car bestCar = null;
+        for (CarPrice carPrice : CarPrice.values()) {
+            if (customerMoney.compareTo(addPercent(carPrice, PERCENT)) >= 0) {
+                Car car = createCar(carPrice, "Black");
+                if (bestCar == null || car.getPrice().compareTo(bestCar.getPrice()) > 0) {
+                    bestCar = car;
+                }
             }
-            if (costumerMoney.compareTo(PricesForCars.HIANCE.getPriceCar()) >= 0 &&
-                    !warehouse.getTypeHiance().isEmpty()) {
-                report.addSoldCars(this.name, warehouse.getTypeHiance().get(0));
-                return warehouse.takeHiance(warehouse.getTypeHiance().get(0));
-            }
-            if (costumerMoney.compareTo(PricesForCars.SOLARA.getPriceCar()) >= 0 &&
-                    !warehouse.getTypeSolara().isEmpty()) {
-                report.addSoldCars(this.name, warehouse.getTypeSolara().get(0));
-                return warehouse.takeSolara(warehouse.getTypeSolara().get(0));
-            }
-            if (costumerMoney.compareTo(PricesForCars.CAMRY.getPriceCar()) >= 0 &&
-                    !warehouse.getTypeCamry().isEmpty()) {
-                report.addSoldCars(this.name, warehouse.getTypeCamry().get(0));
-                return warehouse.takeCamry(warehouse.getTypeCamry().get(0));
-            }
+        }
+        if (bestCar != null) {
+            warehouse.addCar(bestCar);
+            report.addSoldCars(this.name, bestCar);
+            warehouse.removeCar(bestCar);
+            return bestCar;
+        }
+        return null;
+    }
+
+    private Car createCar(CarPrice carPrice, String color) throws CountyFactoryNotEqualException {
+        if (carPrice.compareTo(CarPrice.DYNA) >= 0) {
+            return assemblyLine.createDyna(addPercent(carPrice, PERCENT), color);
+        } else if (carPrice.compareTo(CarPrice.HIANCE) >= 0) {
+            return assemblyLine.createHiance(addPercent(carPrice, PERCENT), color);
+        } else if (carPrice.compareTo(CarPrice.SOLARA) >= 0) {
+            return assemblyLine.createSolara(addPercent(carPrice, PERCENT), color);
+        } else if (carPrice.compareTo(CarPrice.CAMRY) >= 0) {
+            return assemblyLine.createCamry(addPercent(carPrice, PERCENT), color);
+        }
         return null;
     }
 
@@ -94,32 +87,33 @@ public class Manager {
 
         BigDecimal totalIncome = BigDecimal.ZERO;
         BigDecimal totalCost = BigDecimal.ZERO;
-        try (FileWriter file = new FileWriter("report.txt", true) ;
-            BufferedWriter writer = new BufferedWriter(file)){
+        try (FileWriter file = new FileWriter("report.txt", true);
+             BufferedWriter writer = new BufferedWriter(file)) {
 
             writer.write("Имя менеджера: " + managerName + "\n\n");
 
-            for (Car car : solidCar){
+            for (Car car : solidCar) {
                 BigDecimal sellingPrice = car.getPrice();
                 BigDecimal costPrice = car.getModelGuide().getCostPriceCar();
                 totalIncome = totalIncome.add(sellingPrice);
                 totalCost = totalCost.add(costPrice);
 
-                writer.write(car.getClass() + " стоимость продажи " + sellingPrice + " себестоимость " +
+                writer.write(car.getCarTyp() + " - стоимость продажи " + sellingPrice + " - себестоимость " +
                         costPrice + "\n");
 
             }
-          BigDecimal profit = totalIncome.subtract(totalCost);
+            BigDecimal profit = totalIncome.subtract(totalCost);
 
-        writer.write("Итог:\n");
-        writer.write("Доходы: " + totalIncome + "\n");
-        writer.write("Расходы: " + totalCost + "\n");
-        writer.write("Прибыль: " + profit + "\n");
+            writer.write("Итог:\n");
+            writer.write("Доходы: " + totalIncome + "\n");
+            writer.write("Расходы: " + totalCost + "\n");
+            writer.write("Прибыль: " + profit + "\n");
 
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
+
     public String getName() {
         return name;
     }
